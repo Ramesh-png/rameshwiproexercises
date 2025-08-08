@@ -1,0 +1,14 @@
+zookeeper-server-start.bat ../../config/zookeeper.properties
+ 
+kafka-server-start.bat ../../config/server.properties
+ 
+kafka-topics.bat --create --topic weather-news --bootstrap-server localhost:9092
+ 
+kafka-topics.bat --describe --topic weather-news --bootstrap-server localhost:9092
+ 
+ 
+kafka-console-producer.bat --topic  weather-news  --bootstrap-server localhost:9092
+ 
+ 
+kafka-console-consumer.bat --topic weather-news --from-beginning --bootstrap-server localhost:9092
+ 
