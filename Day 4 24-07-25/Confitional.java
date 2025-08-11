@@ -19,7 +19,7 @@ public class Confitional {
 //		else
 //		{
 //			System.out.println("False");
-//		}
+//		}        
 		
 		char gender='F';
 		
