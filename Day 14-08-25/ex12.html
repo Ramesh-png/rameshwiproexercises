@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ex12 </title>
+</head>
+<body>
+
+<h2> Ex-12 Using JavaScript Modules</h2>
+<p id="output"></p>
+
+<script type="module">
+    import { User } from './js/user.js';
+
+    const user1 = new User("Ramesh");
+    const user2 = new User("Sai");
+
+    document.getElementById("output").innerHTML =
+        `User 1: ${user1.getName()} <br> User 2: ${user2.getName()}`;
+</script>
+
+</body>
+</html>
