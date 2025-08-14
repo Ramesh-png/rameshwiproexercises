@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ex12 - Cities Dropdown</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    button {
+        padding: 8px 12px;
+        background-color: #28a745;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #218838;
+    }
+    select {
+        padding: 6px;
+        width: 200px;
+    }
+</style>
+</head>
+<body>
+
+<h2>City Selector</h2>
+
+<button onclick="loadCities()">Load Cities</button>
+
+<br>
+<select id="cityDropdown">
+    <option value="">-- Select City --</option>
+</select>
+ 
+</body>
+<script src="ex12.js"></script>
+</html>

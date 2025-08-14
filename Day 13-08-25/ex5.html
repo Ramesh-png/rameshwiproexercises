@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ex5 - var, let, const Scope</title>
+</head>
+<body>
+  <script>
+    // Global scope variable
+    var x = 4;
+
+    // Constant variable (global)
+    const z = 9;
+
+    function f() {
+      // Changing global var x
+      x = 9;
+
+      // Block scope variable
+      let y = 8; 
+
+      console.log("x in function is " + x); // Accessible here
+      console.log("y in function is " + y); // Accessible here
+
+      if (true) {
+        let z = 18; // This z is block scoped, not the same as global z
+        console.log("y in if block is " + y); // Accessible here
+        console.log("z in if block is " + z); // 18 (local to this block)
+      }
+
+      console.log("z in function is " + z); // 9 (global const)
+    }
+
+    f(); // function call
+
+    console.log("x outside function is " + x); // Changed to 9
+    // console.log("y outside function is " + y); // ❌ Error (y is block scoped)
+  </script>
+</body>
+</html>

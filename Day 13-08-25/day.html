@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Day</title>
+</head>
+<body>
+
+<h3>Day Finder</h3>
+<button onclick="findDay()">Find Day of 13th August 2030</button>
+<p id="day"></p>
+
+<script>
+function findDay() {
+    let date = new Date(2030, 7, 13);  
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    document.getElementById("day").innerHTML = "13th August 2030 is a " + days[date.getDay()];
+}
+</script>
+
+</body>
+</html>

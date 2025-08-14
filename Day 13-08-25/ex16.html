@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ex16 - Image Gallery</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
+    .gallery-container {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    }
+    img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+    button {
+        margin: 10px;
+        padding: 8px 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<h2>Image Gallery</h2>
+
+<div class="gallery-container">
+    <img id="galleryImage" src="" alt="Gallery Image">
+    <div>
+        <button onclick="prevImage()">Prev</button>
+        <button onclick="nextImage()">Next</button>
+    </div>
+</div>
+
+<script>
+    const images = [
+        "http://t0.gstatic.com/images?q=tbn:ANd9GcT_84-3bQc0hc31BTq8GseHRUw9d7BwEeV58wjw9w2CgYmkqY5f-9vYfmsbtsSEtVCvviYiGkco",
+        "http://t2.gstatic.com/images?q=tbn:ANd9GcRXqcBePmlLFD3U5vcy1nbdBvLBX6RXPhN8At3qaIfJ5NQAya2MJH_179Dt867DAH8RhJgsWi5I",
+        "http://t0.gstatic.com/images?q=tbn:ANd9GcT_84-3bQc0hc31BTq8GseHRUw9d7BwEeV58wjw9w2CgYmkqY5f-9vYfmsbtsSEtVCvviYiGkco",
+        "http://t2.gstatic.com/images?q=tbn:ANd9GcRXqcBePmlLFD3U5vcy1nbdBvLBX6RXPhN8At3qaIfJ5NQAya2MJH_179Dt867DAH8RhJgsWi5I"
+    ];
+
+    let currentIndex = 0;
+    const galleryImage = document.getElementById("galleryImage");
+
+    function showImage(index) {
+        galleryImage.src = images[index];
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Show first image initially
+    showImage(currentIndex);
+</script>
+
+</body>
+</html>

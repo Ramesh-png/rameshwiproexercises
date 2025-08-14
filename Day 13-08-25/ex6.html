@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ex6 - Filter & Uppercase</title>
+</head>
+<body>
+  <h2>filter uppercase</h2>
+  <div id="result"></div>
+
+  <script>
+    const names = ["Alice", "Jonathan", "Eve", "Michael", "Tom", "Christopher"];
+
+    const filteredNames = names
+      .filter(name => name.length > 5)
+      .map(name => name.toUpperCase());
+
+    document.getElementById("result").textContent = filteredNames.join(", ");
+  </script>
+</body>
+</html>

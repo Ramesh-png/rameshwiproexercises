@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ex4</title>
+  <style>
+  
+  </style>
+</head>
+<body>
+  <h2>Character Counter</h2>
+
+  <textarea id="myText" maxlength="50" rows="4" cols="40" placeholder="Type something..."></textarea>
+  <div id="counter">50 characters remaining</div>
+
+  <script>
+    const textBox = document.getElementById("myText");
+    const counterLabel = document.getElementById("counter");
+    const maxLength = textBox.maxLength;
+
+    textBox.addEventListener("input", function () {
+      const remaining = maxLength - textBox.value.length;
+      counterLabel.textContent = `${remaining} characters remaining`;
+    });
+  </script>
+</body>
+</html>

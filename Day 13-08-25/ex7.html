@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ex7 - Eligible to Vote</title>
+</head>
+<body>
+  <h2>People Eligible to Vote</h2>
+  <div id="result"></div>
+
+  <script>
+    const people = [
+      { name: "ram", age: 23, city: "city1" },
+      { name: "jay", age: 22, city: "city2" },
+      { name: "siva", age: 14, city: "city3" },
+      
+    ];
+
+    const eligible = people.filter(person => person.age >= 18);
+
+    const output = eligible.map(p => `${p.name} (${p.age}) - ${p.city}`).join("<br>");
+
+    document.getElementById("result").innerHTML = output;
+  </script>
+</body>
+</html>
