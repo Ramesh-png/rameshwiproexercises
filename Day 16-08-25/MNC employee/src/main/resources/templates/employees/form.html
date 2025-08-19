@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${employee.id == null ? 'Add Employee' : 'Edit Employee'}">Employee</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+<h1 th:text="${employee.id == null ? 'Add Employee' : 'Edit Employee'}">Employee</h1>
+<form th:action="${employee.id == null} ? @{/employees} : @{'/employees/' + ${employee.id}}" method="post" th:object="${employee}">
+    <div>
+        <label>Name</label>
+        <input type="text" th:field="*{name}"/>
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" th:field="*{email}"/>
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </div>
+    <div>
+        <label>Type</label>
+        <select th:field="*{type}">
+            <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
+    </div>
+    <fieldset>
+        <legend>Address</legend>
+        <div><label>Street</label><input type="text" th:field="*{address.street}"/></div>
+        <div><label>City</label><input type="text" th:field="*{address.city}"/></div>
+        <div><label>State</label><input type="text" th:field="*{address.state}"/></div>
+        <div><label>Zip</label><input type="text" th:field="*{address.zip}"/></div>
+    </fieldset>
+    <div>
+        <label>Department</label>
+        <select th:field="*{department.id}">
+            <option value="">-- none --</option>
+            <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.name}"></option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+    <a th:href="@{/employees}">Cancel</a>
+</form>
+</body>
+</html>

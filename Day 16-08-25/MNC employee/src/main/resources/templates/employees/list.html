@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Employees</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+<h1>Employees</h1>
+<form method="get" th:action="@{/employees}">
+    <input type="text" name="name" th:value="${name}" placeholder="Search by name"/>
+    <button type="submit">Search</button>
+    <a th:href="@{/employees}">Reset</a>
+</form>
+<a th:href="@{/employees/new}">Add Employee</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>Email</th><th>Type</th><th>Department</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${employees}">
+        <td th:text="${e.id}">1</td>
+        <td th:text="${e.name}">Name</td>
+        <td th:text="${e.email}">email</td>
+        <td th:text="${e.type}">REGULAR</td>
+        <td th:text="${e.department != null ? e.department.name : '—'}">IT</td>
+        <td>
+            <a th:href="@{|/employees/${e.id}/edit|}">Edit</a>
+            <form th:action="@{|/employees/${e.id}/delete|}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Delete?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
