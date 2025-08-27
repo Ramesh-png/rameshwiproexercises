@@ -1,0 +1,12 @@
+<form>
+<div>
+    <label for="name">Name:</label>
+    <input id="name" name="userName" [(ngModel)]="userName"   type="text">
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" name="userEmail" [(ngModel)]="userEmail"  type="email">
+  </div>
+
+  <button (click)="submit()">Submit</button>
+</form>
