@@ -1,0 +1,61 @@
+@if (isLoading) {
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+} @else if (product) {
+  <div class="row">
+    <div class="col-md-6">
+      <div class="product-detail-image">
+        @if (product.imageUrl) {
+          <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid rounded">
+        } @else {
+          <div class="image-placeholder-large">
+            <span class="text-muted">No Image Available</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ product.name }}</h2>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong class="h4 text-primary"> ₹{{ product.price }}</strong></p>
+          
+          <div class="product-details mb-3">
+            <p><strong>Category:</strong> {{ product.category }}</p>
+            <p><strong>Manufacturer:</strong> {{ product.manufacturer }}</p>
+            <p><strong>Unit of Measure:</strong> {{ product.uom }}</p>
+            <p><strong>Rating:</strong> {{ product.rating }}/5</p>
+            @if (product.manufactureDate) {
+              <p><strong>Manufacture Date:</strong> {{ product.manufactureDate | date:'mediumDate' }}</p>
+            }
+          </div>
+          
+          <p class="card-text">
+            @if (product.quantity > 0) {
+              <span class="badge bg-success">In stock: {{ product.quantity }}</span>
+            } @else {
+              <span class="badge bg-danger">Out of stock</span>
+            }
+          </p>
+          
+          @if (authService.isLoggedIn() && product.quantity > 0) {
+            <button class="btn btn-primary btn-lg me-2" (click)="addToCart()">
+              <i class="bi bi-cart-plus"></i> Add to Cart
+            </button>
+          }
+          <button class="btn btn-outline-secondary" routerLink="/products">
+            <i class="bi bi-arrow-left"></i> Back to Products
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-danger">
+    Product not found.
+  </div>
+}

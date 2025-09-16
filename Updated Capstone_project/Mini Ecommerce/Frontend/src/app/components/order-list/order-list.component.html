@@ -1,0 +1,57 @@
+<h2 class="mb-4">My Orders</h2>
+
+@if (isLoading) {
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else {
+  @if (orders.length === 0) {
+    <div class="alert alert-info">
+      No orders found. <a routerLink="/products">Start shopping</a>
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders; track order.id) {
+            <tr>
+              <td>{{ order.id }}</td>
+              <td> ₹{{ order.totalAmount }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'bg-warning': order.status === 'PENDING',
+                  'bg-info': order.status === 'PROCESSING',
+                  'bg-primary': order.status === 'SHIPPED',
+                  'bg-success': order.status === 'DELIVERED',
+                  'bg-danger': order.status === 'CANCELLED'
+                }">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>{{ order.createdAt | date:'medium' }}</td>
+              <td>
+                <!-- <button class="btn btn-info btn-sm me-2" [routerLink]="['/orders', order.id]">View</button> -->
+                @if (order.status === 'PENDING' && !authService.isAdmin()) {
+                  <button class="btn btn-danger btn-sm" (click)="cancelOrder(order)">Cancel</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+}

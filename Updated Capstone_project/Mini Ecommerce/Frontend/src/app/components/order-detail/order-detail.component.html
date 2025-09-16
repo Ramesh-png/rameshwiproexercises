@@ -1,0 +1,77 @@
+@if (isLoading) {
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+} @else if (order) {
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>Order #{{ order.id }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Status:</strong>
+              <span class="badge ms-2" [ngClass]="{
+                'bg-warning': order.status === 'PENDING',
+                'bg-info': order.status === 'PROCESSING',
+                'bg-primary': order.status === 'SHIPPED',
+                'bg-success': order.status === 'DELIVERED',
+                'bg-danger': order.status === 'CANCELLED'
+              }">
+                {{ order.status }}
+              </span>
+            </div>
+            <div class="col-md-6">
+              <strong>Date:</strong> {{ order.createdAt | date:'medium' }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <strong>Total Amount:</strong>  ₹{{ order.totalAmount }}
+            </div>
+          </div>
+
+          <h5 class="mt-4">Order Items</h5>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of order.orderItems; track item.id) {
+                  <tr>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td> ₹{{ item.price }}</td>
+                    <td> ₹{{ item.price * item.quantity }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-3">
+            @if (order.status === 'PENDING' && !authService.isAdmin()) {
+              <button class="btn btn-danger me-2" (click)="cancelOrder()">Cancel Order</button>
+            }
+            <button class="btn btn-secondary" routerLink="/orders">Back to Orders</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-danger">
+    Order not found.
+  </div>
+}

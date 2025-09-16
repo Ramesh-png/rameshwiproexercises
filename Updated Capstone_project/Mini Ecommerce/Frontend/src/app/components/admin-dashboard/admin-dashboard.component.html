@@ -1,0 +1,268 @@
+<h2 class="mb-4">Admin Dashboard</h2>
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <button class="nav-link" [class.active]="activeTab === 'products'" (click)="activeTab = 'products'">Products</button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">Users</button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">Orders</button>
+  </li>
+</ul>
+
+@if (activeTab === 'products') {
+  <div>
+    <h3>Manage Products</h3>
+    <div class="card mb-4">
+      <div class="card-header btn2">
+        <h5 class="text-light text-center">Add New Product</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="createProduct()" class="row g-3">
+          <div class="col-6">
+          <div class="col-md-3">
+            <label class="form-label">Name*</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.name" name="name" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Category*</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.category" name="category" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Manufacturer</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.manufacturer" name="manufacturer">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Price*</label>
+            <input type="number" class="form-control" [(ngModel)]="newProduct.price" name="price" required min="0" step="0.01">
+          </div>
+          </div>
+          <div class="col-6">
+          <div class="col-md-3">
+            <label class="form-label">Quantity*</label>
+            <input type="number" class="form-control" [(ngModel)]="newProduct.quantity" name="quantity" required min="0">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Unit of Measure</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.uom" name="uom" >
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Rating</label>
+            <input type="number" class="form-control" [(ngModel)]="newProduct.rating" name="rating" min="0" max="5" step="0.1">
+          </div>
+           <div class="col-md-3">
+            <label class="form-label">Image URL</label>
+            <input type="url" class="form-control" [(ngModel)]="newProduct.imageUrl" name="imageUrl" >
+          </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" [(ngModel)]="newProduct.description" name="description" rows="3"></textarea>
+          </div>
+   
+          @if (newProduct.imageUrl) {
+            <div class="col-12">
+              <label class="form-label">Image Preview</label>
+              <div class="image-preview">
+                <img [src]="newProduct.imageUrl" alt="Product preview" class="img-thumbnail" (error)="handleImageError($event)">
+                <div class="image-error" style="display: none;">
+                  <span class="text-danger">Invalid image URL</span>
+                </div>
+              </div>
+            </div>
+          }
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn2">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr >
+            <th>Image</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Manufacturer</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>UOM</th>
+            <th>Rating</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products; track product.id) {
+            <tr>
+              <td>
+                @if (product.imageUrl) {
+                  <img [src]="product.imageUrl" [alt]="product.name" class="product-thumb" (error)="handleImageError($event)">
+                  <div class="image-placeholder-small" style="display: none;">No Image</div>
+                } @else {
+                  <div class="image-placeholder-small">No Image</div>
+                }
+              </td>
+              <td>{{ product.id }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.manufacturer }}</td>
+              <td> ₹{{ product.price | number:'1.2-2' }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.uom }}</td>
+              <td>{{ product.rating }}</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" (click)="editProduct(product)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id!)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (editingProduct) {
+      <div class="modal show d-block" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Product</h5>
+              <button type="button" class="btn-close" (click)="editingProduct = null"></button>
+            </div>
+            <div class="modal-body">
+              <form (ngSubmit)="updateProduct()">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Name*</label>
+                    <input type="text" class="form-control" [(ngModel)]="editingProduct.name" name="name" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Category*</label>
+                    <input type="text" class="form-control" [(ngModel)]="editingProduct.category" name="category" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Manufacturer</label>
+                    <input type="text" class="form-control" [(ngModel)]="editingProduct.manufacturer" name="manufacturer">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Unit of Measure</label>
+                    <input type="text" class="form-control" [(ngModel)]="editingProduct.uom" name="uom">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Price*</label>
+                    <input type="number" class="form-control" [(ngModel)]="editingProduct.price" name="price" required min="0" step="0.01">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Quantity*</label>
+                    <input type="number" class="form-control" [(ngModel)]="editingProduct.quantity" name="quantity" required min="0">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Rating</label>
+                  <input type="number" class="form-control" [(ngModel)]="editingProduct.rating" name="rating" min="0" max="5" step="0.1">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" [(ngModel)]="editingProduct.description" name="description" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Image URL</label>
+                  <input type="url" class="form-control" [(ngModel)]="editingProduct.imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+                @if (editingProduct.imageUrl) {
+                  <div class="mb-3">
+                    <label class="form-label">Image Preview</label>
+                    <div class="image-preview">
+                      <img [src]="editingProduct.imageUrl" alt="Product preview" class="img-thumbnail" (error)="handleImageError($event)">
+                      <div class="image-error" style="display: none;">
+                        <span class="text-danger">Invalid image URL</span>
+                      </div>
+                    </div>
+                  </div>
+                }
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-secondary" (click)="editingProduct = null">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-backdrop show"></div>
+    }
+  </div>
+} @else if (activeTab === 'users') {
+  <div>
+    <h3>Manage Users</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr >
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.address || 'No address provided' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+} @else if (activeTab === 'orders') {
+  <div>
+    <h3>Manage Orders</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders; track order.id) {
+            <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.userId }}</td>
+              <td> ₹{{ order.totalAmount | number:'1.2-2' }}</td>
+              <td>
+                <select class="form-select" [value]="order.status" (change)="updateOrderStatus(order, $any($event.target).value)">
+                  <option value="PENDING">Pending</option>
+                  <option value="PROCESSING">Processing</option>
+                  <option value="SHIPPED">Shipped</option>
+                  <option value="DELIVERED">Delivered</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
+              </td>
+              <td>{{ order.createdAt | date:'medium' }}</td>
+              <td>
+                <button class="btn btn-sm btn-info" [routerLink]="['/orders', order.id]">View</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

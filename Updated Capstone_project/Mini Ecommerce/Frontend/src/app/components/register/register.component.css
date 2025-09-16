@@ -1,0 +1,10 @@
+.login-card{
+    border: 2px solid black;
+}
+.login-btn{
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+
+}
+ .login-title{
+  background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+ }
